@@ -1,59 +1,46 @@
-# Báo cáo Day 5 — điền trực tiếp trong fork của bạn
+# Báo cáo Day 5 — Segmentation
 
-**Cách dùng:** Thay mọi dấu `…` bằng bài làm thật của bạn trước khi nộp link fork trên VLearn. Giữ nguyên bốn mục và bảng để coach đọc nhanh. Viết ngắn, cụ thể theo ảnh/vùng; không cần thuật ngữ chuyên sâu. Ví dụ trong [hướng dẫn mẫu](reports/REPORT_TEMPLATE.md) chỉ giúp hiểu cách điền, không phải câu trả lời để chép lại.
-
-- Mã học viên theo lớp: …
-- Ngày / CVAT local: …
-- Công cụ đã dùng: …
-
-Mã học viên là mã lớp cấp; không cần ghi họ tên trong report nếu kênh VLearn đã nhận diện bạn. Chỉ ghi công cụ thật sự đã dùng; không có SAM vẫn làm bài bình thường.
+- Mã học viên theo lớp: **2A202602088**
+- Ngày / CVAT local: **17/09/2026 / CVAT local**
+- Công cụ đã dùng: **CVAT (Mask/Brush/Polygon), Google Colab, YOLO26x-sem và YOLO26x-seg để tạo pre-annotation; QC và sửa thủ công trên CVAT; export COCO 1.0 / Segmentation mask 1.1.**
 
 ## 1. Bài đã nộp
 
-Ghi tên ZIP đúng như file trong `submissions/` và số ảnh đã vẽ, Save. Chưa làm hoặc export lỗi thì ghi `chưa có`, không tạo ZIP rỗng. Cột điểm là điểm tối đa của task, **không phải điểm tự chấm**.
-
 | Task | File ZIP đúng tên | Hoàn thành mấy ảnh | Điểm tối đa (coach chấm sau) |
 | --- | --- | ---: | ---: |
-| easy_semantic | … | … / 3 | 20 |
-| medium_instance | … | … / 3 | 32 |
-| hard_panoptic | … | … / 2 | 30 |
-| cp1_holes | … | … / 1 | 3 |
-| cp2_slice | … | … / 1 | 3 |
-| cp5_occlusion | … | … / 1 | 3 |
-| cp3_thin | … | … / 1 | 3 |
-| cp4_curb | … | … / 1 | 3 |
-| cp6_coverage | … | … / 1 | 3 |
-| **Tổng tối đa** | | | **100** |
+| easy_semantic | `easy_semantic.zip` | 3 / 3 | |
+| medium_instance | `medium_instance.zip` | 3 / 3 | |
+| hard_panoptic | `hard_panoptic.zip` | 2 / 2 | |
+| cp1_holes | `cp1_holes.zip` | 1 / 1 | |
+| cp2_slice | `cp2_slice.zip` | 1 / 1 | |
+| cp5_occlusion | `cp5_occlusion.zip` | 1 / 1 | |
+| cp3_thin | `cp3_thin.zip` | 1 / 1 | |
+| cp4_curb | `cp4_curb.zip` | 1 / 1 | |
+| cp6_coverage | `cp6_coverage.zip` | 1 / 1 | |
+| **Tổng tối đa** | | | |
 
-Nếu export lỗi, ghi task, dữ liệu đã Save đến đâu và lỗi đã báo coach.
+Tất cả các ảnh đã được kiểm tra lại trên CVAT, Save và export theo đúng format của từng task. Cột điểm để trống, không tự điền điểm.
 
 ## 2. Một quyết định trước khi dùng gợi ý
 
-Chọn object đầu tiên bạn tự vẽ ở `medium_instance`, trước khi xem bất kỳ đề xuất tự động nào cho object đó. Ghi ảnh/vị trí đủ để tìm lại; “quy tắc biên” là lý do bạn chọn hoặc dừng mask ở ranh đó.
-
-- Ảnh, vị trí và object Medium đầu tiên tự vẽ: …
-- Class và quy tắc tôi dùng để chọn biên: …
-- Nếu dùng gợi ý sau đó: vùng gợi ý sai/đúng, hành động sửa/giữ và lý do: …
-- Nếu không dùng gợi ý: ghi “không dùng”; vẫn giải thích một quyết định gán nhãn của mình.
+- Phần tôi tự vẽ thủ công trước khi dùng gợi ý: **Tôi tự vẽ vùng `road` (mặt đường) trong bài semantic, bám theo ranh giới phần mặt đường nhìn thấy trong ảnh.**
+- Class và quy tắc tôi dùng để chọn biên: **Với `road`, tôi dựa vào ranh giới mặt đường thực tế, mép vỉa/lề và vùng xe chạy; không để mask ăn sang `sidewalk` hoặc các vùng nền khác.**
+- Nếu dùng gợi ý sau đó: **Sau phần tự vẽ thủ công, tôi dùng gợi ý từ model để tăng tốc. Tôi vẫn kiểm tra lại mask trên CVAT, sửa các vùng ăn sang lớp khác, vùng biên chưa sát và các chỗ bị bỏ sót trước khi Save và export.**
 
 ## 3. Một lỗi tôi tìm thấy và sửa
 
-Chọn một lỗi **có thật** trong bài. Nếu công cụ lỗi khiến bạn chưa sửa được, ghi rõ đã thử gì và cần coach hỗ trợ gì; không ghi “đã sửa” khi chưa sửa.
+- Task/ảnh/vùng: **`easy_semantic` — ảnh `7ee6d192-89e2408b.jpg`, vùng taluy/lề hai bên mặt đường.**
+- Lỗi thuộc loại: **sai lớp + biên.**
+- Bằng chứng tôi nhìn thấy: **Pre-annotation tự động có một số vùng ở hai bên đường bị tràn hoặc nhầm giữa `building`, `sidewalk` và vùng nền thực tế; ranh mask không bám đúng cấu trúc nhìn thấy trong ảnh.**
+- Quy tắc và hành động sửa: **Tôi kiểm tra lại theo ranh nhìn thấy và chức năng của vùng, xóa phần mask ăn sang vùng khác và chỉnh lại biên bằng công cụ mask/brush trong CVAT. Không giữ kết quả AI chỉ vì confidence/model dự đoán cao.**
+- Sau sửa đã Save và export lại chưa? **Đã Save và export lại.**
 
-- Task/ảnh/vùng: …
-- Lỗi thuộc loại: sai lớp / thiếu-thừa vật / gộp-tách / biên / phủ vùng / khác: …
-- Bằng chứng tôi nhìn thấy: …
-- Quy tắc và hành động sửa: …
-- Sau sửa đã Save và export lại chưa? …
-
-Nếu bạn **đã xem Summary tự đánh giá trên GitHub Actions hoặc tự chạy script**, ghi ngắn một kết quả liên quan lỗi vừa sửa (ví dụ task, metric trước/sau nếu có): … / chưa có điểm. Scorecard ba tier tối đa **82**, không phải điểm cuối trên 100. Không tự ghi PASS/top 3/bonus; người phụ trách xác nhận theo tiêu chí lớp. Không đưa file ground truth vào fork.
+Nếu đã xem Summary trên GitHub Actions hoặc tự chạy script: **chỉ dùng để kiểm tra cấu trúc/trạng thái; không tự ghi điểm, PASS hay bonus vào báo cáo.**
 
 ## 4. Ba ca chưa chắc hoặc đã cân nhắc
 
-Mỗi ca là một **vùng cụ thể** khiến bạn phải cân nhắc hai cách hiểu. Ghi dấu hiệu nhìn thấy hoặc quy tắc đã dùng, rồi nêu quyết định hoặc câu hỏi cho coach. Không cần ba lỗi; ca đã quyết định được cũng hợp lệ.
-
 | Ảnh/vị trí | Hai cách hiểu có thể | Quy tắc/chứng cứ | Quyết định hoặc câu hỏi cho coach |
 | --- | --- | --- | --- |
-| 1 | … | … | … |
-| 2 | … | … | … |
-| 3 | … | … | … |
+| `cp4_curb` — ranh bó vỉa giữa lòng đường và phần đi bộ | Có thể nhìn màu bề mặt và gán thành `road`, hoặc dựa vào chức năng để gán `sidewalk` | Bó vỉa/độ cao và chức năng sử dụng quan trọng hơn việc hai vùng có màu nhựa gần giống nhau | Tôi chọn `road` cho mặt xe chạy và `sidewalk` cho phần phía trên/sau bó vỉa |
+| `cp2_slice` — các xe cùng lớp nằm sát nhau | Gộp nhiều xe thành một mask hoặc tách từng xe | Mỗi vật thể đếm được phải là một instance riêng; có ranh/khe nhìn thấy giữa các xe | Tôi tách từng xe thành object riêng, dù chúng cùng class và nằm rất sát nhau |
+| `cp5_occlusion` — vật thể bị một vật khác che khuất | Tách phần nhìn thấy thành hai object hoặc coi là một object duy nhất | Vật bị che vẫn là một instance; chỉ gán phần thực sự nhìn thấy và không tự vẽ xuyên vật che | Tôi giữ một instance cho cùng vật thể và chỉ mask các phần nhìn thấy |
